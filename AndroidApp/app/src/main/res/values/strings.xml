@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">CleanUpOurSpace</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="edit_message">Enter A Message</string>
-    <string name="button_send">Send</string>
-</resources>
