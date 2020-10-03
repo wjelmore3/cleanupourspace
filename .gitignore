@@ -17,7 +17,9 @@
 /build
 # Python virtual env
 .venv
+.vscode
 
 # ML related stuff
 ml/prepared_data
+ml/*.json
 
