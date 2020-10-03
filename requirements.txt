@@ -1,0 +1,6 @@
+pylint
+split-folders
+keras
+matplotlib
+pandas
+tensorflow
