@@ -1,104 +1,148 @@
+import re
+import os
 import numpy as np
-import matplotlib.pyplot as plt
-from keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array, array_to_img
-from keras.layers import Conv2D, Flatten, MaxPooling2D, Dense
-from keras.models import Sequential
-
-import glob, os, random
+import pandas as pd
 from pathlib import Path
 from datetime import datetime
 
-base_path = Path('ml/dataset')
-model_path = Path('ml/model')
-model_path.mkdir(parents=True, exist_ok=True)
+import tensorflow as tf
+from tensorflow.keras.applications import ResNet50, MobileNetV2, InceptionV3
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-img_list = glob.glob(os.path.join(base_path, '*/*.jpg'))
 
-print(len(img_list))
+def list_dataset():
+    for dirname, _, filenames in os.walk('ml/dataset'):
+        for filename in filenames:
+            print(os.path.join(dirname, filename))
 
-for i, img_path in enumerate(random.sample(img_list, 6)):
-    img = load_img(img_path)
-    img = img_to_array(img, dtype=np.uint8)
+            
+# Add class name prefix to each path based on class name include in filename
+def add_class_name_prefix(df, col_name):
+    df[col_name] = df[col_name].apply(lambda x: x[:re.search("\d",x).start()] + '/' + x)
+    return df
 
-    plt.subplot(2, 3, i+1)
-    plt.imshow(img.squeeze())
+
+def class_id_to_label(id):
+    label_map = {1: 'glass', 2: 'paper', 3: 'cardboard', 4: 'plastic', 5: 'metal', 6: 'trash'}
+    return label_map[id]
+    
+
+IMAGES_DIR = Path('ml/dataset/Garbage classification/Garbage classification/').absolute()
+    
+train_file = Path('ml/dataset/one-indexed-files-notrash_train.txt').absolute()
+val_file   = Path('ml/dataset/one-indexed-files-notrash_val.txt').absolute()
+test_file  = Path('ml/dataset/one-indexed-files-notrash_test.txt').absolute()
+
+df_train = pd.read_csv(train_file, sep=' ', header=None, names=['rel_path', 'label'])
+df_valid = pd.read_csv(val_file,   sep=' ', header=None, names=['rel_path', 'label'])
+df_test  = pd.read_csv(val_file,   sep=' ', header=None, names=['rel_path', 'label'])
+
+df_train = add_class_name_prefix(df_train, 'rel_path')
+df_valid = add_class_name_prefix(df_valid, 'rel_path')
+df_test  = add_class_name_prefix(df_test,  'rel_path')
+
+df_train['label'] = df_train['label'].apply(class_id_to_label)
+df_valid['label'] = df_valid['label'].apply(class_id_to_label)
+df_test['label']  = df_test['label'].apply(class_id_to_label)
+
+print(f'Found {len(df_train)} training, {len(df_valid)} validation and {len(df_test)} samples.')
+
+datagen = ImageDataGenerator()
+
+datagen_train = datagen.flow_from_dataframe(
+    dataframe=df_train,
+    directory=IMAGES_DIR,
+    x_col='rel_path',
+    y_col='label',
+    color_mode="rgb",
+    class_mode="categorical",
+    batch_size=32,
+    shuffle=True,
+    seed=7,
+)
+
+datagen_valid = datagen.flow_from_dataframe(
+    dataframe=df_valid,
+    directory=IMAGES_DIR,
+    x_col='rel_path',
+    y_col='label',
+    color_mode="rgb",
+    class_mode="categorical",
+    batch_size=32,
+    shuffle=True,
+    seed=7,
+)
+
+def build_model(num_classes):
+    base_model = ResNet50(weights='imagenet', include_top=False)
+    #base_model = MobileNetV2(weights='imagenet', include_top=False)
+    #base_model = InceptionV3(weights='imagenet', include_top=False)
+
+    x = base_model.output
+    x = tf.keras.layers.GlobalAveragePooling2D()(x)
+    x = tf.keras.layers.Dense(1024, activation='relu')(x)
+    predictions = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
+
+    model = tf.keras.Model(inputs=base_model.input, outputs=predictions)
+
+    for layer in base_model.layers:
+        layer.trainable = False
+        
+    return model
+
+
+net = build_model(num_classes=6)
+
+net.compile(optimizer='Adam',
+            loss='categorical_crossentropy',
+            metrics=[tf.keras.metrics.categorical_accuracy])
+
+net.summary()
+
+early_stop = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True)
+
+history = net.fit_generator(
+    generator=datagen_train,
+    validation_data=datagen_valid,
+    epochs=30,
+    validation_freq=1,
+    callbacks=[early_stop]
+)
+
+import matplotlib.pyplot as plt
+
+fig, axs = plt.subplots(nrows=1, ncols=2, figsize=(20, 4))
+
+axs[0].plot(history.history['loss'], label='loss')
+axs[0].plot(history.history['val_loss'], label='val_loss')
+
+axs[1].plot(history.history['categorical_accuracy'], label='acc')
+axs[1].plot(history.history['val_categorical_accuracy'], label='val_acc')
+
+plt.legend()
 plt.show()
 
-train_datagen = ImageDataGenerator(
-    rescale=1./255,
-    shear_range=0.1,
-    zoom_range=0.1,
-    width_shift_range=0.1,
-    height_shift_range=0.1,
-    horizontal_flip=True,
-    vertical_flip=True,
-    validation_split=0.1
+test_generator = datagen.flow_from_dataframe(
+    dataframe=df_test,
+    directory=IMAGES_DIR,
+    x_col='rel_path',
+    y_col='label',
+    color_mode="rgb",
+    class_mode="categorical",
+    batch_size=1,
+    shuffle=False,
+    seed=7
 )
 
-test_datagen = ImageDataGenerator(
-    rescale=1./255,
-    validation_split=0.1
-)
+# y_pred = net.predict(test_generator, batch_size=None, verbose=0, steps=None, callbacks=None, max_queue_size=10, workers=1, use_multiprocessing=False)
 
-train_generator = train_datagen.flow_from_directory(
-    base_path,
-    target_size=(300, 300),
-    batch_size=16,
-    class_mode='categorical',
-    subset='training',
-    seed=0
-)
+filenames = test_generator.filenames
+nb_samples = len(filenames)
 
-validation_generator = test_datagen.flow_from_directory(
-    base_path,
-    target_size=(300, 300),
-    batch_size=16,
-    class_mode='categorical',
-    subset='validation',
-    seed=0
-)
+net.evaluate_generator(test_generator, nb_samples)
 
-labels = (train_generator.class_indices)
-labels = dict((v,k) for k,v in labels.items())
-
-print(labels)
-
-model = Sequential([
-    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu', input_shape=(300, 300, 3)),
-    MaxPooling2D(pool_size=2),
-
-    Conv2D(filters=64, kernel_size=3, padding='same', activation='relu'),
-    MaxPooling2D(pool_size=2),
-    
-    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu'),
-    MaxPooling2D(pool_size=2),
-    
-    Conv2D(filters=32, kernel_size=3, padding='same', activation='relu'),
-    MaxPooling2D(pool_size=2),
-
-    Flatten(),
-
-    Dense(64, activation='relu'),
-
-    Dense(6, activation='softmax')
-])
-
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
-
-model.summary()
-
-model.fit_generator(train_generator, epochs=20, validation_data=validation_generator)
-
-test_x, test_y = validation_generator.__getitem__(1)
-
-preds = model.predict(test_x)
-
-plt.figure(figsize=(16, 16))
-for i in range(16):
-    plt.subplot(4, 4, i+1)
-    plt.title('pred:%s / truth:%s' % (labels[np.argmax(preds[i])], labels[np.argmax(test_y[i])]))
-    plt.imshow(test_x[i])
-
+model_path = Path('ml/model')
+model_path.mkdir(parents=True, exist_ok=True)
 model_name = datetime.now().strftime('%m_%d_%y_%H%M%S') + '.h5'
 print((model_path / model_name).absolute())
-model.save((model_path / model_name).absolute())
+net.save((model_path / model_name).absolute())
