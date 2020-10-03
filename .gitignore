@@ -1,3 +1,4 @@
+
 *.iml
 .gradle
 /local.properties
@@ -12,3 +13,11 @@
 /captures
 .externalNativeBuild
 .cxx
+
+/build
+# Python virtual env
+.venv
+
+# ML related stuff
+ml/prepared_data
+
