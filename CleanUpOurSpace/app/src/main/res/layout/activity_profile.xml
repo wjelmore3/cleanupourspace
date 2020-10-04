@@ -41,7 +41,7 @@
                 android:text="Points:" />
 
             <TextView
-                android:id="@+id/points"
+                android:id="@+id/stats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -49,43 +49,43 @@
                 android:text="Full List of Stats:" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/totalCount"
                 android:layout_width="164dp"
                 android:layout_height="30dp"
                 android:text="Total Trash Picked Up:" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/trash"
                 android:layout_width="138dp"
                 android:layout_height="30dp"
                 android:text="Trash:" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/paper"
                 android:layout_width="84dp"
                 android:layout_height="29dp"
                 android:text="Paper:" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/plastic"
                 android:layout_width="wrap_content"
                 android:layout_height="29dp"
                 android:text="Plastic:" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/cardboard"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:text="Cardboard:" />
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/metal"
                 android:layout_width="85dp"
                 android:layout_height="30dp"
                 android:text="Metal:" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/glass"
                 android:layout_width="88dp"
                 android:layout_height="32dp"
                 android:text="Glass:" />

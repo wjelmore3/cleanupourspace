@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -67,24 +68,51 @@ public class InferenceActivity extends AppCompatActivity {
                 }
 
                 // Assign points based on classification
+                SharedPreferences accumPoints = getApplicationContext().getSharedPreferences("ACCUM_POINTS", 0);
+                SharedPreferences.Editor edit = accumPoints.edit();
+                int points = 0;
+                int trashCount = accumPoints.getInt("totalCnt", 0);
                 switch (maxEntry.getKey()) {
                     case "metal":
-                        points = 5;
+                        points = accumPoints.getInt("metal", 0) + 5;
+                        edit.putInt("metal", points);
+                        edit.putInt("totalCnt", trashCount += 1);
+                        edit.apply();
                         break;
                     case "trash":
-                        points = 2;
+                        points = accumPoints.getInt("trash", 0) + 2;
+                        edit = accumPoints.edit();
+                        edit.putInt("trash", points);
+                        edit.putInt("totalCnt", trashCount += 1);
+                        edit.apply();
                         break;
                     case "plastic":
-                        points = 5;
+                        points = accumPoints.getInt("plastic", 0) + 5;
+                        edit = accumPoints.edit();
+                        edit.putInt("plastic", points);
+                        edit.putInt("totalCnt", trashCount += 1);
+                        edit.apply();
                         break;
                     case "cardboard":
-                        points = 3;
+                        points = accumPoints.getInt("cardboard", 0) + 3;
+                        edit = accumPoints.edit();
+                        edit.putInt("cardboard", points);
+                        edit.putInt("totalCnt", trashCount += 1);
+                        edit.apply();
                         break;
                     case "glass":
-                        points = 10;
+                        points = accumPoints.getInt("glass", 0) + 10;
+                        edit = accumPoints.edit();
+                        edit.putInt("glass", points);
+                        edit.putInt("totalCnt", trashCount += 1);
+                        edit.apply();
                         break;
                     case "paper":
-                        points = 1;
+                        points = accumPoints.getInt("paper", 0) + 1;
+                        edit = accumPoints.edit();
+                        edit.putInt("paper", points);
+                        edit.putInt("totalCnt", trashCount += 1);
+                        edit.apply();
                         break;
                     default:
                         break;
@@ -93,7 +121,7 @@ public class InferenceActivity extends AppCompatActivity {
                 // Update UI components
                 TextView litterType = (TextView) findViewById(R.id.type);
                 litterType.setText("Type of Litter: " + maxEntry.getKey());
-                TextView litterPoints = (TextView) findViewById(R.id.points);
+                TextView litterPoints = (TextView) findViewById(R.id.stats);
                 litterPoints.setText("Awarded Points: " + String.valueOf(points));
             }
         }
