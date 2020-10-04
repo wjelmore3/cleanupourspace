@@ -44,8 +44,10 @@ public class InferenceActivity extends AppCompatActivity {
 
         // Initialize classifier
         tc = TrashClassifier.getInstance();
-        tc.loadModel(this, "model.tflite");
-        tc.loadLabels(this, "labels.txt");
+        if (!tc.isInitialized()) {
+            tc.loadModel(this, "model.tflite");
+            tc.loadLabels(this, "labels.txt");
+        }
 
         // Classify image
         if (tc.isInitialized()) {

@@ -39,13 +39,6 @@ public class TrashClassifier {
         imageProcessor = new ImageProcessor.Builder()
                 .add(new ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
                 .build();
-        // Create a TensorImage object. This creates the tensor of the corresponding
-        // tensor type (uint8 in this case) that the TensorFlow Lite interpreter needs.
-        tImage = new TensorImage(DataType.UINT8);
-
-        // Create a container for the result and specify that this is a quantized model.
-        // Hence, the 'DataType' is defined as UINT8 (8-bit unsigned integer)
-        probabilityBuffer = TensorBuffer.createFixedSize(new int[]{1, 6}, DataType.UINT8);
 
         probabilityProcessor = new TensorProcessor.Builder().add(new NormalizeOp(0, 255)).build();
 
@@ -86,13 +79,18 @@ public class TrashClassifier {
     }
 
     public void preProcessImage(Bitmap bitmap) {
-        // Analysis code for every frame
         // Preprocess the image
+        // Create a TensorImage object. This creates the tensor of the corresponding
+        // tensor type (uint8 in this case) that the TensorFlow Lite interpreter needs.
+        tImage = new TensorImage(DataType.UINT8);
         tImage.load(bitmap);
         tImage = imageProcessor.process(tImage);
     }
 
     public Map<String, Float> analyzeImage() {
+        // Create a container for the result and specify that this is a quantized model.
+        // Hence, the 'DataType' is defined as UINT8 (8-bit unsigned integer)
+        probabilityBuffer = TensorBuffer.createFixedSize(new int[]{1, 6}, DataType.UINT8);
         // Running inference
         if (null != tflite) {
             tflite.run(tImage.getBuffer(), probabilityBuffer.getBuffer());
