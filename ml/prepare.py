@@ -15,11 +15,11 @@ def create_data_csv(filename, dataset):
     result = [y for x in os.walk(dataset) for y in glob(os.path.join(x[0], '*.jpg'))]
 
     # Create csv file
-    with open(filename, 'w') as csvfile:
+    with open(filename, 'w', newline='') as csvfile:
         label_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for file in result:
             file = pathlib.Path(file)
-            label_writer.writerow(['gs://cleanupourspace-vcm/img/dataset/' + file.parts[-2] + '/' + file.parts[-1], file.parts[-2]])
+            label_writer.writerow(['gs://cleanupourspace-vcm/img/dataset/Garbage classification/' + file.parts[-2] + '/' + file.parts[-1], file.parts[-2]])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process dataset preparation parameters.')
@@ -34,6 +34,7 @@ if __name__ == "__main__":
 
     if args.dataset:
         DATASET = args.dataset
+        create_data_csv('ml/dataset/all_classes.csv', DATASET)
 
     if args.split:
         OUTPUT = args.split
