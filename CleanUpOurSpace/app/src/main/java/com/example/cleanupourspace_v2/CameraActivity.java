@@ -62,6 +62,14 @@ public class CameraActivity extends AppCompatActivity {
             }
         }));
 
+        button = (Button) findViewById(R.id.analyze_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openInference();
+            }
+        });
+
         mImageView = findViewById(R.id.image_view);
         mCaptureBtn = findViewById(R.id.capture_image_btn);
 
@@ -133,5 +141,11 @@ public class CameraActivity extends AppCompatActivity {
             //set image captures to ImageView
             mImageView.setImageURI(image_uri);
         }
+    }
+
+    /** Called when the user taps the Camera button */
+    public void openInference() {
+        Intent intent = new Intent(this, InferenceActivity.class);
+        startActivity(intent);
     }
 }
