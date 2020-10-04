@@ -8,6 +8,9 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,16 +23,26 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
+
 public class CameraActivity extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
     private Button button;
 
-    Button mCaptureBtn;
-    ImageView mImageView;
+    private Button mCaptureBtn;
+    private ImageView mImageView;
+    private byte[] image;
 
-    Uri image_uri;
+    public Uri image_uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +74,6 @@ public class CameraActivity extends AppCompatActivity {
                 return false;
             }
         }));
-
         button = (Button) findViewById(R.id.analyze_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,9 +155,10 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    /** Called when the user taps the Camera button */
+    /** Called when the user taps the Take a Photo button */
     public void openInference() {
         Intent intent = new Intent(this, InferenceActivity.class);
+        intent.setData(image_uri);
         startActivity(intent);
     }
 }
