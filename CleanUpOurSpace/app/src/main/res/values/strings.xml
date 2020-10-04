@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">CleanUpOurSpace_V2</string>
+    <string name="app_name">CleanUpOurSpace</string>
     <string name="CameraFragmentTxt">Camera</string>
     <string name="button_left">Home</string>
     <string name="button_middle">Camera</string>
     <string name="button_right">Profile</string>
-    <string name="home_string">Welcome Home!</string>
+    <string name="welcome_string">Welcome to CleanUpOurSpace</string>
     <string name="edit_message">Enter a message:</string>
     <string name="button_send">Send</string>
     <string name="button_save">Save</string>
