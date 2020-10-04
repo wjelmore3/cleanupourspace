@@ -1,5 +1,2 @@
 .jpg filter=lfs diff=lfs merge=lfs -text
 *.h5 filter=lfs diff=lfs merge=lfs -text
-*h5 filter=lfs diff=lfs merge=lfs -text
-*tflite filter=lfs diff=lfs merge=lfs -text
-ml/model/10_03_20_234739/variables/variables.data-00000-of-00001 filter=lfs diff=lfs merge=lfs -text
