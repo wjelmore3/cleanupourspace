@@ -21,6 +21,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
+    private Button button;
 
     Button mCaptureBtn;
     ImageView mImageView;
@@ -34,6 +35,22 @@ public class CameraActivity extends AppCompatActivity {
 
         mImageView = findViewById(R.id.image_view);
         mCaptureBtn = findViewById(R.id.capture_image_btn);
+
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openHome();
+            }
+        });
+
+        button = (Button) findViewById(R.id.button3);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openProfile();
+            }
+        });
 
         //button click
         mCaptureBtn.setOnClickListener(new View.OnClickListener() {
@@ -103,5 +120,16 @@ public class CameraActivity extends AppCompatActivity {
             //set image captures to ImageView
             mImageView.setImageURI(image_uri);
         }
+    }
+    /** Called when the user taps the Camera button */
+    public void openHome() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    /** Called when the user taps the Camera button */
+    public void openProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
     }
 }
