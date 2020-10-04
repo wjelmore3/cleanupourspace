@@ -47,7 +47,7 @@
         android:text="Stats:" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/type"
         android:layout_width="187dp"
         android:layout_height="24dp"
         android:layout_above="@+id/bottom_navigation"
@@ -62,7 +62,7 @@
         android:text="Type of Trash: Metal" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/points"
         android:layout_width="187dp"
         android:layout_height="24dp"
         android:layout_above="@+id/bottom_navigation"
