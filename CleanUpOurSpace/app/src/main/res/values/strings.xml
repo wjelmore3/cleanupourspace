@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">CleanUpOurSpace_V2</string>
-    <string name="fragment_test">POG CHAMP</string>
     <string name="CameraFragmentTxt">Camera</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_left">Home</string>
+    <string name="button_middle">Camera</string>
+    <string name="button_right">Profile</string>
+    <string name="home_string">Welcome Home!</string>
+    <string name="edit_message">Enter a message:</string>
+    <string name="button_send">Send</string>
 </resources>
