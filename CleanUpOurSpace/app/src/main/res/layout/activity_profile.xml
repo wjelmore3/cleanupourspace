@@ -54,25 +54,27 @@
         android:id="@+id/textView2"
         android:layout_width="170dp"
         android:layout_height="27dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="176dp"
         android:text="Username:"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.082"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.303" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="170dp"
         android:layout_height="27dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="200dp"
         android:text="Points:"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.082"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.352" />
 
     <TextView
         android:id="@+id/textView3"
@@ -87,67 +89,87 @@
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="341dp"
+        android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:text="Total Trash Picked Up:"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.509"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintVertical_bias="0.507" />
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="339dp"
+        android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginTop="320dp"
         android:text="Trash:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintVertical_bias="0.554" />
 
     <TextView
         android:id="@+id/textView16"
-        android:layout_width="339dp"
+        android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginTop="460dp"
         android:text="Plastic:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintVertical_bias="0.804" />
 
     <TextView
         android:id="@+id/textView12"
-        android:layout_width="339dp"
+        android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginTop="348dp"
         android:text="Cardboard:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintVertical_bias="0.606" />
 
     <TextView
         android:id="@+id/textView13"
-        android:layout_width="339dp"
+        android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginTop="376dp"
         android:text="Glass:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintVertical_bias="0.658" />
 
     <TextView
         android:id="@+id/textView14"
-        android:layout_width="339dp"
+        android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginTop="404dp"
         android:text="Metal:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintVertical_bias="0.705" />
 
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="339dp"
+        android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginTop="432dp"
         android:text="Paper:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintVertical_bias="0.754" />
 
     <ImageView
         android:id="@+id/imageView3"
